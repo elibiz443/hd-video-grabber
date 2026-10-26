@@ -1,0 +1,35 @@
+{
+  "name": "hd-video-grabber",
+  "productName": "HD Video Grabber",
+  "version": "1.0.0",
+  "description": "Download HD/UHD videos from YouTube and 1000+ sites",
+  "main": "main.js",
+  "author": "You",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0"
+  },
+  "build": {
+    "appId": "com.yourname.hdvideograbber",
+    "productName": "HD Video Grabber",
+    "files": ["main.js", "preload.js", "renderer/**/*"],
+    "asarUnpack": ["node_modules/ffmpeg-static/**"],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "target": ["nsis", "portable"]
+    }
+  }
+}

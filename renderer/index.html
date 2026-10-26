@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:;">
+  <title>HD Video Grabber</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="titlebar">
+    <div class="brand"><span class="logo">⬇︎</span> HD Video Grabber <span class="tag">4K / 8K</span></div>
+    <button class="ghost" id="settingsBtn">⚙︎ Settings</button>
+  </header>
+
+  <main>
+    <section class="card url-card">
+      <div class="url-row">
+        <button class="icon-btn" id="pasteBtn" title="Paste from clipboard">📋</button>
+        <input id="urlInput" type="text" spellcheck="false"
+               placeholder="Paste a video URL — YouTube, Vimeo, TikTok, X/Twitter, Twitch, and 1000+ more…">
+        <button class="primary" id="fetchBtn">Fetch</button>
+      </div>
+      <div id="engineBanner" class="engine hidden"></div>
+    </section>
+
+    <section class="card hidden" id="infoCard">
+      <img id="thumb" alt="">
+      <div class="info-main">
+        <h2 id="videoTitle"></h2>
+        <p class="subline" id="videoMeta"></p>
+        <div class="options-row">
+          <label>Quality
+            <select id="qualitySel">
+              <option value="0" selected>Best available</option>
+              <option value="4320">8K · 4320p</option>
+              <option value="2160">4K · 2160p</option>
+              <option value="1440">QHD · 1440p</option>
+              <option value="1080">Full HD · 1080p</option>
+              <option value="720">HD · 720p</option>
+              <option value="480">480p</option>
+              <option value="audio">Audio only</option>
+            </select>
+          </label>
+          <label>Video codec
+            <select id="codecSel">
+              <option value="any">Best available</option>
+              <option value="avc1">H.264 (max compatibility)</option>
+              <option value="vp09">VP9</option>
+              <option value="av01">AV1</option>
+            </select>
+          </label>
+          <label>Container
+            <select id="containerSel">
+              <option value="">Auto</option>
+              <option value="mp4">MP4</option>
+              <option value="webm">WebM</option>
+              <option value="mkv">MKV</option>
+            </select>
+          </label>
+          <label class="hidden" id="audioFmtLabel">Audio format
+            <select id="audioFmtSel">
+              <option value="mp3">MP3</option>
+              <option value="m4a">M4A</option>
+              <option value="opus">Opus</option>
+              <option value="flac">FLAC</option>
+              <option value="wav">WAV</option>
+            </select>
+          </label>
+          <label class="checkbox hidden" id="playlistLabel">
+            <input type="checkbox" id="playlistChk"> Download entire playlist
+          </label>
+        </div>
+        <div><button class="primary big" id="downloadBtn">⬇ Download</button></div>
+      </div>
+    </section>
+
+    <section class="card hidden" id="formatsCard">
+      <h3>All available formats</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Ext</th><th>Resolution</th><th>FPS</th><th>Codecs</th><th>Size</th><th></th></tr></thead>
+          <tbody id="formatsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" id="downloadsCard">
+      <div class="downloads-head">
+        <h3>Downloads</h3>
+        <span class="muted" id="dirLabel"></span>
+      </div>
+      <div id="downloadsList">
+        <p class="muted empty" id="downloadsEmpty">No downloads yet — paste a URL above to get started.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="settingsModal">
+    <div class="modal-body card">
+      <h3>Settings</h3>
+      <label class="row">Save to
+        <div class="folder-row">
+          <input id="dirInput" readonly>
+          <button class="ghost" id="browseBtn">Browse…</button>
+        </div>
+      </label>
+      <label class="row">Simultaneous downloads
+        <select id="concurrencySel">
+          <option>1</option><option>2</option><option>3</option><option>4</option>
+        </select>
+      </label>
+      <label class="row">Browser cookies (for private / age-gated videos you can access)
+        <select id="cookiesSel">
+          <option value="none">Don't use cookies</option>
+          <option value="chrome">Chrome</option>
+          <option value="edge">Edge</option>
+          <option value="firefox">Firefox</option>
+          <option value="brave">Brave</option>
+          <option value="opera">Opera</option>
+          <option value="safari">Safari</option>
+        </select>
+      </label>
+      <label class="row">Subtitle languages
+        <input id="subLangsInput" placeholder="en.*, de, es">
+      </label>
+      <div class="checks">
+        <label><input type="checkbox" id="embedSubsChk"> Download &amp; embed subtitles</label>
+        <label><input type="checkbox" id="embedThumbChk"> Embed thumbnail</label>
+        <label><input type="checkbox" id="embedMetaChk"> Embed metadata</label>
+      </div>
+      <div class="engine-row">
+        <button class="ghost" id="updateEngineBtn">Update yt-dlp engine</button>
+        <span class="muted" id="engineMsg"></span>
+      </div>
+      <div class="modal-actions">
+        <button class="ghost" id="closeSettingsBtn">Close</button>
+        <button class="primary" id="saveSettingsBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>
